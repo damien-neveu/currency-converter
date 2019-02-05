@@ -2,7 +2,7 @@ package models
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class AmountTest extends FlatSpec with Matchers {
+class AmountSpec extends FlatSpec with Matchers {
 
   // scalastyle:off magic.number
   "toNumberStr" should "convert cents into a XX.XX decimal formatted number" in {

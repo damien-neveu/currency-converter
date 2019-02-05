@@ -1,7 +1,18 @@
-name := """currency-converter"""
+import java.util.Properties
+
+val appProperties = settingKey[Properties]("The application properties")
+
+appProperties := {
+  val prop = new Properties()
+  IO.load(prop, new File("conf/application.common.conf"))
+  prop
+}
+
+name := appProperties.value.getProperty("project.name")
+version := appProperties.value.getProperty("project.version")
 organization := "com.batbat"
 
-version := "1.0"
+
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 

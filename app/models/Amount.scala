@@ -10,6 +10,8 @@ case class Amount(
 }
 
 object Amount {
+  import play.api.mvc.QueryStringBindable
+  import scala.util.{Success, Try}
 
   private val moneyRx = "([0-9]+)\\.?([0-9]{0,2})".r
 
@@ -30,5 +32,23 @@ object Amount {
     else {
       fractional.toLong
     }
+
+  implicit def amountQueryStringBindable(implicit strBinder: QueryStringBindable[String]): QueryStringBindable[Amount] = new QueryStringBindable[Amount] {
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Amount]] = {
+      strBinder.bind("amount", params).map {
+        case Right(amt) =>
+          Try(Amount.apply(amt)) match {
+            case Success(amount) =>
+              Right(amount)
+            case _ =>
+              Left(s"Unable to bind amount $amt")
+          }
+        case _ =>
+          Left(s"Unable to bind amount from query string")
+      }
+    }
+    override def unbind(key: String, amount: Amount): String =
+      strBinder.unbind("amount", amount.toNumberStr)
+  }
 
 }
