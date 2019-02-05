@@ -14,7 +14,7 @@ object CurrencyConversion {
 
   implicit def currencyQueryStringBindable(
     implicit strBinder: QueryStringBindable[String]): QueryStringBindable[CurrencyConversion] = new QueryStringBindable[CurrencyConversion] {
-    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, CurrencyConversion]] = {
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, CurrencyConversion]] =
       for {
         eitherFrom <- strBinder.bind("from", params)
         eitherTo <- strBinder.bind("to", params)
@@ -34,7 +34,7 @@ object CurrencyConversion {
             Left("Unable to bind currencies 'from' and 'to'")
         }
       }
-    }
+
     override def unbind(key: String, currencyConversion: CurrencyConversion): String =
       strBinder.unbind("from", currencyConversion.from.getCurrencyCode) + "&" + strBinder.unbind("to", currencyConversion.to.getCurrencyCode)
   }
