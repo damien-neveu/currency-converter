@@ -7,6 +7,20 @@ case class Amount(
 
   def toNumberStr: String =
     s"${cents / 100}." + f"${cents % 100}%02d"
+
+  def multiplyBy(d: Double): Amount =
+    Amount(
+      cents = toRoundedEvenInt(cents * d)
+    )
+
+  def divideBy(d: Double): Amount =
+    Amount(
+      cents = toRoundedEvenInt(cents / d)
+    )
+
+  private def toRoundedEvenInt(dd: Double): Int =
+    BigDecimal(dd).setScale(0, BigDecimal.RoundingMode.HALF_EVEN).toInt
+
 }
 
 object Amount {

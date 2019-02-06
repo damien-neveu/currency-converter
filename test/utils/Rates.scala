@@ -20,6 +20,14 @@ object Rates {
     to = USD
   )
 
+  val rateUSDollarToEuro = ExchangeRate(
+    from = USD,
+    to = EUR,
+    rate = 0.8772,
+    source = Google,
+    lastUpdatedAt = ZonedDateTime.now
+  )
+
   val rateEuroToSingaporeDollar = ExchangeRate(
     from = EUR,
     to = SGD,
