@@ -10,4 +10,4 @@ GET     /health                     controllers.HomeController.health
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 # Currency API
-GET     /v1/amount                  controllers.CurrencyController.convert(currencyConversion: models.CurrencyConversion, amount: models.Amount)
+GET     /api/v1/amount              controllers.CurrencyController.convert(currencyConversion: models.CurrencyConversion, amount: models.Amount)

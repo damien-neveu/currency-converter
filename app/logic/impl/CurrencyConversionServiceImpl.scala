@@ -1,16 +1,17 @@
 package logic.impl
 
-import javax.inject.Inject
-
+import javax.inject.{Inject, Named}
 import cache.CacheService
 import logic.CurrencyConversionService
 import models.dtos.ConvertedAmount
-import models.{Amount, CurrencyConversion}
+import models.{Amount, CurrencyConversion, ExchangeRateSource}
+import ws.ExchangeRateWebService
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class CurrencyConversionServiceImpl @Inject()(
-    cacheService: CacheService
+    cacheService: CacheService,
+    @Named(ExchangeRateSource.`free-currency-converter-api`) freeCurrencyConverterApi: ExchangeRateWebService
   )(implicit val ctx: ExecutionContext) extends CurrencyConversionService {
 
   override def convert(amount: Amount, currencyConversion: CurrencyConversion): Future[Either[String, ConvertedAmount]] = {

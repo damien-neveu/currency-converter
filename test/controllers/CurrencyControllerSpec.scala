@@ -8,10 +8,10 @@ import play.api.test.Helpers._
 
 class CurrencyControllerSpec extends PlaySpec with GuiceOneServerPerTest with Injecting {
 
-  "CurrencyController GET /v1/amount" must {
+  "CurrencyController GET /api/v1/amount" must {
 
     lazy val wsClient = inject[WSClient]
-    lazy val url = s"http://localhost:$port/v1/amount"
+    lazy val url = s"http://localhost:$port/api/v1/amount"
 
     "return BadRequest 400 when mandatory query string params are missing or malformed" in {
       val response = await(wsClient.url(url).addQueryStringParameters("from" -> "SGD", "to" -> "ZZZ", "amount" -> "100.50").get())

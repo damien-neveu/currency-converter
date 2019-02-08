@@ -28,6 +28,11 @@ object Rates {
     lastUpdatedAt = ZonedDateTime.now
   )
 
+  val conversionUSDollarToEuro = CurrencyConversion(
+    from = USD,
+    to = EUR
+  )
+
   val rateEuroToSingaporeDollar = ExchangeRate(
     from = EUR,
     to = SGD,

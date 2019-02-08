@@ -21,6 +21,7 @@ scalaVersion := "2.12.8"
 libraryDependencies ++= Seq(
   guice,
   caffeine,
+  ws,
   "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.1" % Test
 )
 
