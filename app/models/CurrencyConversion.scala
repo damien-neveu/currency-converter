@@ -5,7 +5,11 @@ import java.util.Currency
 case class CurrencyConversion(
   from: Currency,
   to: Currency
-)
+) {
+
+  def desc(separator: String): String = s"${from.getCurrencyCode}$separator${to.getCurrencyCode}"
+
+}
 
 object CurrencyConversion {
 

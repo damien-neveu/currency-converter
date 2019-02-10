@@ -20,6 +20,7 @@ class FreeCurrencyConverterApiWebServiceSpec extends FlatSpec
     s"$confPath.convert-url-format" -> "/api/v6/convert?q=%s_%s&compact=ultra",
     s"$confPath.timeout-in-millis" -> 10000
   ))
+
   // scalastyle:off magic.number
   implicit val defaultPatience: PatienceConfig =
     PatienceConfig(timeout = Span(5, Seconds), interval = Span(500, Millis))

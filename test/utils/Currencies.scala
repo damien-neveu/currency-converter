@@ -9,5 +9,6 @@ object Currencies {
   val SGD: Currency = Currency.getInstance("SGD")
   val GBP: Currency = Currency.getInstance("GBP")
   val CAD: Currency = Currency.getInstance("CAD")
+  val PHP: Currency = Currency.getInstance("PHP")
 
 }

@@ -51,4 +51,14 @@ object Rates {
     to = CAD
   )
 
+  val conversionSingaporeDollarToCanadianDollar = CurrencyConversion(
+    from = SGD,
+    to = CAD
+  )
+
+  val conversionEuroToPhilippinePeso = CurrencyConversion(
+    from = EUR,
+    to = PHP
+  )
+
 }

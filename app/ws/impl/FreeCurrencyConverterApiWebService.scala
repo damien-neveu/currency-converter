@@ -25,12 +25,13 @@ class FreeCurrencyConverterApiWebService @Inject()(
 
   private val log: Logger = LoggerFactory.getLogger(classOf[FreeCurrencyConverterApiWebService])
 
-  private val urlTemplate: String = s"${conf.get[String](s"$confPath.host")}${
-                                        conf.get[String](s"$confPath.convert-url-format")}"
   private val timeout: Duration = conf.get[Int](s"$confPath.timeout-in-millis").millis
 
+  override val urlTemplate: String = s"${conf.get[String](s"$confPath.host")}${
+                                         conf.get[String](s"$confPath.convert-url-format")}"
+
   override def getExchangeRate(conv: CurrencyConversion): Future[Either[String, ExchangeRate]] = {
-    val url: String = urlTemplate.format(conv.from.getCurrencyCode, conv.to.getCurrencyCode)
+    val url: String = buildUrl(conv)
     log.info(s"About to GET $url")
     ws.url(url)
       .withRequestTimeout(timeout)
@@ -42,7 +43,7 @@ class FreeCurrencyConverterApiWebService @Inject()(
   private def handleResponse(url: String, conv: CurrencyConversion): WSResponse => Either[String, ExchangeRate] = response =>
     response.status match {
       case Status.OK =>
-        response.json \ getConversionKey(conv) match {
+        response.json \ conv.desc(separator) match {
           case JsDefined(JsNumber(exchangeRate)) =>
             log.info(s"GET $url successfully returned ${response.json}")
             Right(ExchangeRate(
@@ -53,7 +54,7 @@ class FreeCurrencyConverterApiWebService @Inject()(
               lastUpdatedAt = ZonedDateTime.now
             ))
           case _ =>
-            log.warn(s"GET $url returned OK but field ${getConversionKey(conv)} could not be extracted from the response ${response.json}")
+            log.warn(s"GET $url returned OK but field ${conv.desc(separator)} could not be extracted from the response ${response.json}")
             Left(s"Cannot extract exchange rate from $FreeCurrencyConverter response ${response.json}")
         }
       case _ =>
@@ -65,17 +66,16 @@ class FreeCurrencyConverterApiWebService @Inject()(
     case throwable: Throwable =>
       log.warn(s"GET $url failed", throwable)
       Future.successful(Left(
-        s"Cannot get exchange rate ${getConversionKey(conv)} from $FreeCurrencyConverter because of exception ${throwable.getMessage}"
+        s"Cannot get exchange rate ${conv.desc(separator)} from $FreeCurrencyConverter because of exception ${throwable.getMessage}"
       ))
   }
-
-  private def getConversionKey(conv: CurrencyConversion): String =
-    s"${conv.from.getCurrencyCode}_${conv.to.getCurrencyCode}"
 
 }
 
 object FreeCurrencyConverterApiWebService {
 
   val confPath: String = s"exchange-rate-providers.${ExchangeRateSource.`free-currency-converter-api`}"
+
+  val separator: String = "_"
 
 }

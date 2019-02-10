@@ -30,7 +30,7 @@ trait FakeFreeCurrencyConverterApiWebService {
         }
         case otherCall => Action {
 //          println(s"NOT_FOUND endpoint $otherCall to withFakeFreeCurrencyConverterApiWebService")
-          NotFound(s"FakeFreeCurrencyConverterApiWebService has no such endpoint")
+          NotFound(s"FakeFreeCurrencyConverterApiWebService has no such endpoint $otherCall")
         }
       }
     } { implicit port =>
